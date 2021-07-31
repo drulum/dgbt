@@ -4,10 +4,8 @@ from django.db import models
 from categories.models import Category
 from projects.models import Project
 
-user_model = get_user_model()
 
-
-class Report:
+class Report(models.Model):
 
     NATURE_CHOICES = [
         ('problem', 'I would like to report a problem'),
@@ -36,8 +34,8 @@ class Report:
         ('reproduce', 'Unable to reproduce'),
     ]
 
-    reporter = models.ForeignKey(user_model, on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    reporter = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='projects')
     summary = models.CharField(max_length=200)
     description = models.TextField()
     nature = models.CharField(choices=NATURE_CHOICES)
@@ -45,7 +43,7 @@ class Report:
     severity = models.CharField(choices=SEVERITY_CHOICES, blank=True)
     priority = models.CharField(choices=PRIORITY_CHOICES, blank=True)
     reproducibility = models.CharField(choices=REPRODUCIBILITY_CHOICES, blank=True)
-    assigned_to = models.ForeignKey(user_model, on_delete=models.CASCADE)
+    assigned_to = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
