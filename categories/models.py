@@ -2,10 +2,10 @@ from django.db import models
 
 
 class Category:
-    category = models.CharField(max_length=40)
+    title = models.CharField(max_length=40)
 
     class Meta:
-        ordering = ['category']
+        ordering = ['title']
 
     def __str__(self):
-        return self.category
+        return self.title
