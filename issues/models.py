@@ -1,6 +1,11 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
+from categories.models import Category
+from projects.models import Project
+
+user_model = get_user_model()
+
 
 class Report:
 
@@ -31,17 +36,16 @@ class Report:
         ('reproduce', 'Unable to reproduce'),
     ]
 
-    reporter = models.ForeignKey(get_user_model(),
-                                 on_delete=models.CASCADE)
-    # 'project' field once projects app designed
+    reporter = models.ForeignKey(user_model, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
     summary = models.CharField(max_length=200)
     description = models.TextField()
     nature = models.CharField(choices=NATURE_CHOICES)
-    # 'category' field FK to model once created
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     severity = models.CharField(choices=SEVERITY_CHOICES, blank=True)
     priority = models.CharField(choices=PRIORITY_CHOICES, blank=True)
     reproducibility = models.CharField(choices=REPRODUCIBILITY_CHOICES, blank=True)
-    # 'assigned_to' field once groups are in place
+    assigned_to = models.ForeignKey(user_model, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
