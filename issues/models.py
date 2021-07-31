@@ -34,16 +34,18 @@ class Report(models.Model):
         ('reproduce', 'Unable to reproduce'),
     ]
 
-    reporter = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='projects')
+    reporter = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='reports')
     summary = models.CharField(max_length=200)
     description = models.TextField()
-    nature = models.CharField(choices=NATURE_CHOICES)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    severity = models.CharField(choices=SEVERITY_CHOICES, blank=True)
-    priority = models.CharField(choices=PRIORITY_CHOICES, blank=True)
-    reproducibility = models.CharField(choices=REPRODUCIBILITY_CHOICES, blank=True)
-    assigned_to = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    nature = models.CharField(choices=NATURE_CHOICES, max_length=20)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name='project_reports')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_reports',
+                                 blank=True, null=True)
+    severity = models.CharField(choices=SEVERITY_CHOICES, max_length=20, blank=True)
+    priority = models.CharField(choices=PRIORITY_CHOICES, max_length=20, blank=True)
+    reproducibility = models.CharField(choices=REPRODUCIBILITY_CHOICES, max_length=20, blank=True)
+    assigned_to = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name='tasks',
+                                    blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
